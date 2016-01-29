@@ -1,0 +1,49 @@
+function sendEmail(e) {
+  var EmployeeName = e.values[1];
+  var DepartmentName = e.values[2];
+  var Company = e.values[3];  
+  var Address = e.values[4];  
+  var ContactProspectName = e.values[5];  
+  var DesiredOutcome = e.values[6];  
+  var ApprovedDenied = e.values[7];  
+  var AssignedTo = e.values[8];  
+  var PhoneNumbers = e.values[9];  
+  var EmailAddress = e.values[10];  
+  var EmployeeEmail = e.values[11];  
+  var EmployeeEmailAddress = e.values[12];  
+
+  var url = '';
+  
+  var approve = url + '&approval=true'+'&reply='+email; 
+  var reject = url + '&approval=false'+'&reply='+email;
+  
+  var html = "<body>"+
+                "<h2>Please review</h2><br />"+
+                "Employee Name: " + EmployeeName+ "<br />"+ 
+				"Employee Email: " +EmployeeEmail+ "<br />"+ 
+				"Department Name: " + DepartmentName+ "<br />"+ 
+				"Company: " + company + "<br />"+ 
+				"Address: " + Address+ "<br />"+ 
+				"ContactProspectName: " + ContactProspectName+ "<br />"+ 
+				"DesiredOutcome: " + DesiredOutcome+ "<br />"+ 
+                "<a href="+ approve +">Approve</a><br />"+
+                "<a href="+ reject +">Reject</a><br />"+
+             "</body>";
+  
+  MailApp.sendEmail("<YOUR_EMAIL>", "Approval Request", 
+                    "What no html?", {htmlBody: html});  
+}
+
+
+
+function doGet(e){
+ 
+  var answer = (e.parameter.approval == 'true') ? 'Buy it!' : 'Not this time, Keep saving'; 
+  
+  MailApp.sendEmail(e.parameter.reply, "Purchase Request", 
+                    "Your manager said: "+ answer);   
+  
+  var app = UiApp.createApplication();
+  app.add(app.createHTML('<h2>An email was sent to '+ e.parameter.reply + ' saying: '+ answer + '</h2>'))
+  return app
+}
